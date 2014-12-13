@@ -52,7 +52,7 @@ function askhost($url, $options_array) {
 		curl_setopt($fp, CURLOPT_SSL_VERIFYHOST, FALSE);
 	}
 	if (0!=strlen($proxystring)) {
-	    curl_setopt($ch, CUROPT_PROXY, $proxystring);
+	    curl_setopt($fp, CURLOPT_PROXY, $proxystring);
 	}	
 	curl_setopt($fp, CURLOPT_URL, $url);
 	curl_setopt($fp, CURLOPT_RETURNTRANSFER, TRUE);
