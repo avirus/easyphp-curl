@@ -16,7 +16,7 @@
 // output: data, or array(data,http_code,d,curl_info_array)
 // curl_info_array -=> http://php.net/manual/ru/function.curl-getinfo.php
 
-function askhost($url, $options_array) {
+function askhost($url, $options_array=array()) {
     $proxystring="";
     $srvd=FALSE;
     $srvauth="";
