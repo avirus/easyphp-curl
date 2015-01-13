@@ -8,6 +8,7 @@
 // auth_data - "user:password"
 // cert_pem - certificate pem file path
 // cert_pwd - certificate password
+// cookie - cookie in format "name1=value1; name2=value2"
 // timeout - timeout in milliseconds 
 // headers - http headers
 // debug - true, returns array(data,http_code,d,curl_info_array) / false - returns only data
@@ -15,7 +16,7 @@
 // output: data, or array(data,http_code,d,curl_info_array)
 // curl_info_array -=> http://php.net/manual/ru/function.curl-getinfo.php
 
-function askhost($url, $options_array= array()) {
+function askhost($url, $options_array) {
     $proxystring="";
     $srvd=FALSE;
     $srvauth="";
@@ -33,7 +34,8 @@ function askhost($url, $options_array= array()) {
     if (isset($options_array["cert_pwd"])) $certpwd=$options_array["cert_pwd"];
     if (isset($options_array["timeout"])) $tmoutms=$options_array["timeout"];
     if (isset($options_array["headers"])) $headers=$options_array["headers"];
-    if (isset($options_array["debug"])) $httpcode_needed=$options_array["debug"];    
+    if (isset($options_array["debug"])) $httpcode_needed=$options_array["debug"];
+    if (isset($options_array["cookie"])) $cookie=$options_array["cookie"];
     
 	$fp=curl_init();
 	$verbose = fopen('php://temp', 'rw+');
@@ -54,6 +56,9 @@ function askhost($url, $options_array= array()) {
 	if (0!=strlen($proxystring)) {
 	    curl_setopt($fp, CURLOPT_PROXY, $proxystring);
 	}	
+	if (0!=strlen($cookie)) {
+	curl_setopt($fp, CURLOPT_COOKIE, $cookie);
+	}
 	curl_setopt($fp, CURLOPT_URL, $url);
 	curl_setopt($fp, CURLOPT_RETURNTRANSFER, TRUE);
 	curl_setopt($fp, CURLOPT_NOPROGRESS, TRUE);
