@@ -25,7 +25,7 @@ function askhost($url, $options_array=array()) {
     $tmoutms = 60000;
     $headers="";
     $httpcode_needed=false;
-    $cookie;
+    $cookie="";
     
     if (isset($options_array["post_data"])) $srvd=$options_array["post_data"];
     if (isset($options_array["proxy"])) $proxystring=$options_array["proxy"];
