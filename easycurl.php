@@ -11,7 +11,7 @@
 // cookie - cookie in format "name1=value1; name2=value2"
 // timeout - timeout in milliseconds 
 // headers - http headers
-// debug - true, returns array(data,http_code,d,curl_info_array) / false - returns only data
+// debug - true, returns array(data,headers,http_code,d,curl_info_array) / false - returns only data
 // proxy - proxy string 1.2.3.208:3128
 // output: data, or array(data,http_code,d,curl_info_array)
 // curl_info_array -=> http://php.net/manual/ru/function.curl-getinfo.php
@@ -25,6 +25,7 @@ function askhost($url, $options_array=array()) {
     $tmoutms = 60000;
     $headers="";
     $httpcode_needed=false;
+    $cookie;
     
     if (isset($options_array["post_data"])) $srvd=$options_array["post_data"];
     if (isset($options_array["proxy"])) $proxystring=$options_array["proxy"];
@@ -68,14 +69,16 @@ function askhost($url, $options_array=array()) {
 	curl_setopt($fp, CURLOPT_VERBOSE, TRUE);
 	curl_setopt($fp,CURLOPT_STDERR, $verbose);
 		//      curl_setopt($fp, CURLOPT_CERTINFO, TRUE);
+	curl_setopt($fp, CURLOPT_HEADER,TRUE);
 	$data = curl_exec($fp);
+	list($header, $body) = explode("\r\n\r\n", $data, 2);
 	$httpcode = curl_getinfo($fp, CURLINFO_HTTP_CODE);
 	$cinfo=curl_getinfo($fp,1);
 	curl_close($fp);
 	rewind($verbose);
 	$verb=stream_get_contents($verbose);
 	//!rewind($verbose)
-	if ($httpcode_needed) return array("data"=>$data, "httpcode"=>$httpcode, "d"=>$verb, "curl_info_array"=>$cinfo);
-	return $data; 	//otherwise
+	if ($httpcode_needed) return array("data"=>$body,"headers"=>$header, "httpcode"=>$httpcode, "d"=>$verb, "curl_info_array"=>$cinfo);
+	return $body; 	//otherwise
 };
 ?>
