@@ -1,3 +1,4 @@
+<pre>
 easyphp-curl
 ============
 
@@ -26,3 +27,4 @@ while ($index<12345) // put your last page number here
     imagejpeg($new,sprintf("%003s",$index).".jpg", 75); // save scaled page
     $index++;
 }
+</pre>
